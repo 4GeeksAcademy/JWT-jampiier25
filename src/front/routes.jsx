@@ -3,12 +3,23 @@
 import {
     createBrowserRouter,
     createRoutesFromElements,
-    Route,
+    Route, 
+    Navigate,
 } from "react-router-dom";
 import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
+
+import Private from "./pages/Private";
+import Signup from "./pages/SignUp";
+import Login from "./pages/Login";
+
+
+const ProtectedRoute = ({ children }) => {
+  const token = sessionStorage.getItem("token");
+  return token ? children : <Navigate to="/login" />;
+};
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -25,6 +36,12 @@ export const router = createBrowserRouter(
         <Route path= "/" element={<Home />} />
         <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
         <Route path="/demo" element={<Demo />} />
+
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/private" element={<ProtectedRoute> <Private /> </ProtectedRoute>}/>
+
+
       </Route>
     )
 );
